@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
         features = "src/main/java/features",
         glue = {"stepDefinitions"},
         strict = true,
-        dryRun = true
+        dryRun = false
 )
 public class CucumberRunner {
 }

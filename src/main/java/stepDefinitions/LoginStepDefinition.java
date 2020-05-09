@@ -17,7 +17,7 @@ public class LoginStepDefinition {
     @Before
     public void setUp() {
         System.out.println("Into the setup method of AccountStep...");
-        System.setProperty("webdriver.chrome.driver", "/Users/akmuhammet/Desktop/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/Users/allaberdiyev/Downloads/chromedriver");
         driver = new ChromeDriver();
     }
 
@@ -32,7 +32,7 @@ public class LoginStepDefinition {
 
     @Given("^User is already on Login Page$")
     public void user_is_already_on_Login_Page() {
-        driver.get("https://global.americanexpress.com/login");
+        driver.get("https://www.dice.com/dashboard/login");
     }
 
     @When("title of page is {string}")
@@ -44,8 +44,8 @@ public class LoginStepDefinition {
 
     @Then("User enters User Id with {string} and Password with {string}")
     public void user_enters_User_Id_with_and_Password_with(String string, String string2) {
-        WebElement userId = driver.findElement(By.id("eliloUserID"));
-        WebElement password = driver.findElement(By.id("eliloPassword"));
+        WebElement userId = driver.findElement(By.id("email"));
+        WebElement password = driver.findElement(By.id("password"));
 
         userId.sendKeys(string);
         password.sendKeys(string2);
@@ -53,9 +53,12 @@ public class LoginStepDefinition {
 
     @Then("User clicks on Log In button")
     public void user_clicks_on_Log_In_button() {
+        driver.findElement(By.xpath("//*[@id=\"loginDataSubmit\"]/div[3]/div/button")).click();
     }
 
-    @Then("User is on Dashboard Page")
-    public void user_is_on_Dashboard_Page() {
+    @Then("User is on Dashboard Page with title {string}")
+    public void user_is_on_Dashboard_Page_with_title(String string) {
+        String pageTitle = driver.getTitle();
+        Assert.assertEquals(string,pageTitle);
     }
 }
