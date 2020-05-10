@@ -6,59 +6,48 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import pages.LoginPage;
+import utilites.Driver;
 
 public class LoginStepDefinition {
-    WebDriver driver;
+    LoginPage loginPage = null;
 
     @Before
     public void setUp() {
-        System.out.println("Into the setup method of AccountStep...");
-        System.setProperty("webdriver.chrome.driver", "/Users/allaberdiyev/Downloads/chromedriver");
-        driver = new ChromeDriver();
+        loginPage = new LoginPage();
     }
 
     @After
     public void cleanUp() {
         System.out.println("Into the cleanUp method of AccountStep...");
-        if (null != driver) {
-            driver.close();
-            driver.quit();
-        }
     }
 
     @Given("^User is already on Login Page$")
     public void user_is_already_on_Login_Page() {
-        driver.get("https://www.dice.com/dashboard/login");
+        Driver.get().get("https://www.dice.com/dashboard/login");
     }
 
     @When("title of page is {string}")
     public void title_of_page_is(String expected) {
         System.out.println("This is parameter:" + expected);
-        String title = driver.getTitle();
-        Assert.assertEquals(expected, title);
+        Assert.assertEquals(expected, loginPage.getPageTitle());
     }
 
     @Then("User enters User Id with {string} and Password with {string}")
-    public void user_enters_User_Id_with_and_Password_with(String string, String string2) {
-        WebElement userId = driver.findElement(By.id("email"));
-        WebElement password = driver.findElement(By.id("password"));
-
-        userId.sendKeys(string);
-        password.sendKeys(string2);
+    public void user_enters_User_Id_with_and_Password_with(String email, String password) {
+        loginPage.setEmail(email);
+        loginPage.setPassword(password);
     }
 
     @Then("User clicks on Log In button")
     public void user_clicks_on_Log_In_button() {
-        driver.findElement(By.xpath("//*[@id=\"loginDataSubmit\"]/div[3]/div/button")).click();
+        loginPage.doLogin();
     }
 
     @Then("User is on Dashboard Page with title {string}")
     public void user_is_on_Dashboard_Page_with_title(String string) {
-        String pageTitle = driver.getTitle();
-        Assert.assertEquals(string,pageTitle);
+        String title = Driver.get().getTitle();
+        Assert.assertEquals(string, title);
+        System.out.println(title);
     }
 }
